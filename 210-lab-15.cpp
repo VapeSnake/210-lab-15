@@ -1,4 +1,4 @@
-//COMSC-210 | Lab 15 | Noel Mier-Luna
+// COMSC-210 | Lab 15 | Noel Mier-Luna
 #include <iostream>
 #include <iomanip>
 #include <vector> // Using vector for storing movie objects.
@@ -7,23 +7,38 @@ using namespace std;
 
 const int WIDTH = 10; // Constant for formatting output width.
 
-class Movie {
+class Movie
+{
     string title;
-    int year; 
+    int year;
     string screenWriter;
     // Getters and setters for the Movie class member variables.
-    public:
+public:
     string getTitle() const { return title; }
     void setTitle(string t) { title = t; }
     int getYear() const { return year; }
-    void setYear(int y) { year = y;}
+    void setYear(int y) { year = y; }
     string getWriter() const { return screenWriter; }
     void setWriter(string w) { screenWriter = w; }
 
-    void print() const {
+    void print() const
+    {
         cout << "Movie: " << setw(WIDTH) << getTitle()
-             << "Year: " << setw(WIDTH)
-
+             << "Year: " << setw(WIDTH) << getYear()
+             << "Screenwriter: " << setw(WIDTH) << getWriter() << endl;
     }
 
+    int main()
+    {
+        vector<Movie> movies; // Vector to store Movie objects.
+        string temp_title;
+        int temp_year;
+        string temp_writer;
+        ifstream inFile("input.txt"); // Opens the input file for reading movie data.
+        if (!inFile)
+        {
+            cerr << "Error opening file!" << endl;
+            return 1; // Exits program if file can't be opened.
+        }
+    }
 };
