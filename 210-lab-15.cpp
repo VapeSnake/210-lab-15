@@ -52,7 +52,7 @@ int main()
     }
     inFile.close(); // Closes the input file after reading is done.
     // Test for printing the movies to verify that they were read correctly.
-    for (const auto &movie : movies)
+    for (const auto &movie : movies) // References Movie objects to avoid unnecessary copies.
     {
         movie.print();
     }
