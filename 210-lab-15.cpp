@@ -27,6 +27,7 @@ public:
              << "Year: " << setw(WIDTH) << getYear()
              << "Screenwriter: " << setw(WIDTH) << getWriter() << endl;
     }
+};
 
     int main()
     {
@@ -38,15 +39,20 @@ public:
         if (!inFile)
         {
             cerr << "Error opening file!" << endl;
-
         }
-        while (inFile >> temp_title >> temp_year >> temp_writer)
+        while (inFile >> temp_year)
+        {
+            inFile.ignore();              // Ignores newline character after reading year to prevent issues with getline.
+            getline(inFile, temp_title);  // Reads movie title from the file.
+            getline(inFile, temp_writer); // Reads screenwriter name from the file.
+            Movie temp_movie;             // Creates a temporary Movie object to store read data.
+            temp_movie.setYear(temp_year);
+            temp_movie.setTitle(temp_title);
+            temp_movie.setWriter(temp_writer);
+            movies.push_back(temp_movie); // Adds the temporary Movie object to the movies vector.
+        }
         {
             Movie temp_movie; // Creates a temporary Movie object to store read data.
-            temp_movie.setTitle(temp_title);
-            temp_movie.setYear(temp_year);
-            temp_movie.setWriter(temp_writer);
-            movies.push_back(temp_movie); // Adds the temporary movie object to the vector.
         }
         inFile.close(); // Closes the input file after reading is done.
         // Test for printing the movies to verify that they were read correctly.
@@ -56,4 +62,3 @@ public:
         }
         return 0;
     }
-};
