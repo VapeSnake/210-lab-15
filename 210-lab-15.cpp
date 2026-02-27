@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 
-const int WIDTH = 10; // Constant for formatting output width.
+const int WIDTH = 30; // Constant for formatting output width.
 
 class Movie
 {
@@ -23,42 +23,41 @@ public:
 
     void print() const
     {
-        cout << "Movie: " << setw(WIDTH) << getTitle()
-             << "Year: " << setw(WIDTH) << getYear()
-             << "Screenwriter: " << setw(WIDTH) << getWriter() << endl;
+        cout << "Movie: " << left << setw(WIDTH) << getTitle()
+             << "Year: " << left << setw(WIDTH) << getYear()
+             << "Screenwriter: " << left << setw(WIDTH) << getWriter() << endl;
     }
 };
 
-    int main()
+int main()
+{
+    vector<Movie> movies; // Vector to store Movie objects.
+    string temp_title;
+    int temp_year; // Temporary variables for reading movie data from the file.
+    string temp_writer;
+
+    ifstream inFile ("input.txt"); // Opens the input file for reading movie data.
+    if (!inFile)
     {
-        vector<Movie> movies; // Vector to store Movie objects.
-        string temp_title;
-        int temp_year; // Temporary variables for reading movie data from the file.
-        string temp_writer;
-        ifstream inFile("input.txt"); // Opens the input file for reading movie data.
-        if (!inFile)
-        {
-            cerr << "Error opening file!" << endl;
-        }
-        while (inFile >> temp_year)
-        {
-            inFile.ignore();              // Ignores newline character after reading year to prevent issues with getline.
-            getline(inFile, temp_title);  // Reads movie title from the file.
-            getline(inFile, temp_writer); // Reads screenwriter name from the file.
-            Movie temp_movie;             // Creates a temporary Movie object to store read data.
-            temp_movie.setYear(temp_year);
-            temp_movie.setTitle(temp_title);
-            temp_movie.setWriter(temp_writer);
-            movies.push_back(temp_movie); // Adds the temporary Movie object to the movies vector.
-        }
-        {
-            Movie temp_movie; // Creates a temporary Movie object to store read data.
-        }
-        inFile.close(); // Closes the input file after reading is done.
-        // Test for printing the movies to verify that they were read correctly.
-        for (const Movie movie : movies)
-        {
-            movie.print();
-        }
-        return 0;
+        cerr << "Error opening file!" << endl;
+        return 1; // Exit with error code if file cannot be opened.
     }
+    while (getline(inFile, temp_title)) // This fixes issue. Movie title had white spaces and wasn't read properly.
+    {
+        inFile >> temp_year;
+        inFile.ignore();    // Used to ignore newline character after reading year so that the next getline reads the screenwriter name correctly.       
+        getline(inFile, temp_writer); // Reads screenwriter name from the file.
+        Movie temp_movie;             // Creates a temporary Movie object to store read data.
+        temp_movie.setYear(temp_year);
+        temp_movie.setTitle(temp_title);
+        temp_movie.setWriter(temp_writer);
+        movies.push_back(temp_movie); // Adds the temporary Movie object to the movies vector.
+    }
+    inFile.close(); // Closes the input file after reading is done.
+    // Test for printing the movies to verify that they were read correctly.
+    for (const auto& movie : movies)
+    {
+        movie.print();
+    }
+    return 0;
+}
