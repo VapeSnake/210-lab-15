@@ -1,11 +1,8 @@
 // COMSC-210 | Lab 15 | Noel Mier-Luna
 #include <iostream>
-#include <iomanip>
 #include <vector> // Using vector for storing movie objects.
 #include <fstream>
 using namespace std;
-
-const int WIDTH = 30; // Constant for formatting output width.
 
 class Movie
 {
@@ -23,9 +20,9 @@ public:
 
     void print() const
     {
-        cout << "Movie: " << left << setw(WIDTH) << getTitle()
-             << "Year: " << left << setw(WIDTH) << getYear()
-             << "Screenwriter: " << left << setw(WIDTH) << getWriter() << endl;
+        cout << "Movie: " << getTitle() << "\n"
+             << "Year: " << getYear() << "\n" // Prints the movie title and year. <Iomanip> not needed
+             << "Screenwriter: " << getWriter() << "\n\n";
     }
 };
 
@@ -36,7 +33,7 @@ int main()
     int temp_year; // Temporary variables for reading movie data from the file.
     string temp_writer;
 
-    ifstream inFile ("input.txt"); // Opens the input file for reading movie data.
+    ifstream inFile("input.txt"); // Opens the input file for reading movie data.
     if (!inFile)
     {
         cerr << "Error opening file!" << endl;
@@ -45,7 +42,7 @@ int main()
     while (getline(inFile, temp_title)) // This fixes issue. Movie title had white spaces and wasn't read properly.
     {
         inFile >> temp_year;
-        inFile.ignore();    // Used to ignore newline character after reading year so that the next getline reads the screenwriter name correctly.       
+        inFile.ignore();              // Used to ignore newline character after reading year so that the next getline reads the screenwriter name correctly.
         getline(inFile, temp_writer); // Reads screenwriter name from the file.
         Movie temp_movie;             // Creates a temporary Movie object to store read data.
         temp_movie.setYear(temp_year);
@@ -55,7 +52,7 @@ int main()
     }
     inFile.close(); // Closes the input file after reading is done.
     // Test for printing the movies to verify that they were read correctly.
-    for (const auto& movie : movies)
+    for (const auto &movie : movies)
     {
         movie.print();
     }
