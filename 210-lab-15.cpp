@@ -32,13 +32,28 @@ public:
     {
         vector<Movie> movies; // Vector to store Movie objects.
         string temp_title;
-        int temp_year;
+        int temp_year; // Temporary variables for reading movie data from the file.
         string temp_writer;
         ifstream inFile("input.txt"); // Opens the input file for reading movie data.
         if (!inFile)
         {
             cerr << "Error opening file!" << endl;
-            return 1; // Exits program if file can't be opened.
+
         }
+        while (inFile >> temp_title >> temp_year >> temp_writer)
+        {
+            Movie temp_movie; // Creates a temporary Movie object to store read data.
+            temp_movie.setTitle(temp_title);
+            temp_movie.setYear(temp_year);
+            temp_movie.setWriter(temp_writer);
+            movies.push_back(temp_movie); // Adds the temporary movie object to the vector.
+        }
+        inFile.close(); // Closes the input file after reading is done.
+        // Test for printing the movies to verify that they were read correctly.
+        for (const Movie movie : movies)
+        {
+            movie.print();
+        }
+        return 0;
     }
 };
